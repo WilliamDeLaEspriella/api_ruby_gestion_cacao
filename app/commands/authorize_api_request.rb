@@ -1,4 +1,4 @@
-
+require 'json_web_token'
 class AuthorizeApiRequest
   prepend SimpleCommand
 
@@ -7,15 +7,15 @@ class AuthorizeApiRequest
   end
 
   def call
-    user
+    current_user
   end
 
   private
 
   attr_reader :headers
 
-  def user
-    @user ||= User.find(decoded_auth_token[:user_id]) if decoded_auth_token
+  def current_user
+    @user ||= User.find_by(email: decoded_auth_token[:email]) if decoded_auth_token
     @user || errors.add(:token, 'Invalid token') && nil
   end
 

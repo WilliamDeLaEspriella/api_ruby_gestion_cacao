@@ -1,6 +1,6 @@
 require 'json_web_token'
 class Api::V1::UsersController < ApplicationController
-  skip_before_action :authenticate_request 
+  
   
   def sign_in
       command = AuthenticateUser.call(params[:username], params[:password]) 

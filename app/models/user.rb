@@ -9,7 +9,7 @@ class User < ApplicationRecord
                     uniqueness: { case_sensitive: false }
   validates :contact, uniqueness: true, case_sensitive: false
   validates :role, presence: true
-  enum role: [:association, :producer]
+  enum role: [:producer,:association]
 
   before_create { email.downcase! }
 end

@@ -17,10 +17,8 @@ class AuthenticateUser
 	attr_accessor :username, :password 
 	
 	def user
-		Rails.logger.debug "---------------------------------"
 		user = User.find_by_email(username) 
 		if user.nil?
-			Rails.logger.debug "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 			user = User.find_by_contact(username) 
 		end
 		return user if user && user.authenticate(password) 
