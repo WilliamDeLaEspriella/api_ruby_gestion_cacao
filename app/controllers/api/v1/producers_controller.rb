@@ -1,22 +1,22 @@
 class Api::V1::ProducersController < ApplicationController
-  before_action :authenticate_producer
+  before_action :authenticate_producer,only: [:show,:update]
+  before_action :authenticate_association,only: [:index,:create]
   before_action :set_producer, only: [:show, :update, :destroy]
 
-  # GET /producers
+  # GET /associations/:association_id/producers
   def index
-    @producers = Producer.all
-
-    render json: @producers
+    @producers = @association.producers
+    render json: @producers ,status: :ok
   end
 
-  # GET /producers/1
+  # GET  /associations/:association_id/producers/1
   def show
-    render json: @producer
+    render json: @producer,status: :ok
   end
 
-  # POST /producers
+  # POST /associations/:association_id/producers
   def create
-    producer = Producer.new(producer_params)
+    producer = @association.producers.new(producer_params)
 
     if producer.save
       render json: producer, status: :created
@@ -25,7 +25,7 @@ class Api::V1::ProducersController < ApplicationController
     end
   end
 
-  # PATCH/PUT /producers/1
+  # PATCH/PUT  /associations/:association_id/producers/1
   def update
     if @producer.update(producer_params)
       render json: @producer
@@ -38,7 +38,8 @@ class Api::V1::ProducersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_producer
-      @producer = Producer.find(params[:id])
+      @association = Association.find(params[:association_id])
+      @producer = @association.producers.find(params[:id])
     end
 
     # Only allow a trusted parameter "white list" through.

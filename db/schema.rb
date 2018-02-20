@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180218221211) do
+ActiveRecord::Schema.define(version: 20180220020815) do
+
+  create_table "associations", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "description", null: false
+    t.integer "location_id"
+    t.integer "manager_id"
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_associations_on_user_id"
+  end
 
   create_table "locations", force: :cascade do |t|
     t.float "latitude"
@@ -20,12 +31,22 @@ ActiveRecord::Schema.define(version: 20180218221211) do
     t.integer "producer_id"
   end
 
+  create_table "managers", force: :cascade do |t|
+    t.string "appointment", null: false
+    t.string "email", null: false
+    t.string "name", null: false
+    t.string "telephone", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "producers", force: :cascade do |t|
     t.string "name", null: false
     t.integer "location_id"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "association_id"
     t.index ["user_id"], name: "index_producers_on_user_id"
   end
 
@@ -36,6 +57,7 @@ ActiveRecord::Schema.define(version: 20180218221211) do
     t.integer "role", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email"
   end
 
 end
